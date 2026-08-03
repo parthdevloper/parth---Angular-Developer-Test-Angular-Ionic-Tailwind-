@@ -1,0 +1,36 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
+
+.mobile-frame {
+  max-width: 430px;
+  min-width: 280px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+}
+
+ion-content { --background: #f4f5f7; }
+ion-tabs, ion-tabs > [slot="bottom"] { background: #f4f5f7; }
+
+.header-btn {
+  --background: #fff;
+  --color: #64748b;
+}
+
+.header-btn::part(native) {
+  border-radius: 50%;
+}
+
+ion-back-button {
+  --icon-font-size: 20px;
+  --color: #64748b;
+}
+
+ion-back-button::part(native) {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
