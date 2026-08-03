@@ -1,0 +1,1 @@
+import{Dt as vt,p as F}from"./main-YJKV36FB.js";var t=class o{direction=vt(`forward`);static ɵfac=function(a){return new(a||o)};static ɵprov=F({token:o,factory:o.ɵfac,providedIn:`root`})};export{t};
