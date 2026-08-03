@@ -1,0 +1,54 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar class="px-2 !pt-1">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Analytics</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" class="header-btn w-[42px]! h-[42px]! rounded-full! shadow-md">
+        <ion-icon slot="icon-only" name="settings-outline"  class="!text-lg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="bg-white rounded-2xl p-4 shadow-sm mb-5" [@fadeIn]="loaded()">
+    <div class="text-center mb-6">
+      <span class="block text-xs mb-1">Total Balance</span>
+      <span class="text-3xl font-bold" [appCountUp]="dataService.analyticsData().total"></span>
+    </div>
+
+    <div class="flex justify-center mb-6">
+      <div class="relative w-[220px] h-[220px]">
+        <canvas #chartCanvas class="w-full! h-full!"></canvas>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+          <span class="block text-xl font-bold" [appCountUp]="dataService.analyticsData().spent"></span>
+          <span class="text-xs opacity-60">{{ dataService.analyticsData().percentage }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3 mb-5">
+      @for (item of dataService.analyticsData().breakdown; track item.label; let even = $even) {
+        <div class="rounded-xl p-3 flex items-center" [style.background]="'rgba(67, 97, 238, 0.08)'">
+          <div class="size-3 rounded-full mr-3" [style.background]="item.color"></div>
+          <span class="flex-1 text-[13px]">{{ item.label }}</span>
+          <span class="font-semibold text-sm" [appCountUp]="item.value"></span>
+        </div>
+      }
+    </div>
+
+    <div class="flex justify-center gap-2">
+      <span class="w-5 h-2 rounded-sm bg-[var(--ion-color-primary)]"></span>
+      <span class="size-2 rounded-full bg-current opacity-20"></span>
+      <span class="size-2 rounded-full bg-current opacity-20"></span>
+    </div>
+  </div>
+
+  <ion-segment value="lorem" [@fadeIn]="loaded()">
+    <ion-segment-button value="lorem">LOREM</ion-segment-button>
+    <ion-segment-button value="ipsum">IPSUM</ion-segment-button>
+    <ion-segment-button value="dolor">DOLOR</ion-segment-button>
+  </ion-segment>
+</ion-content>
