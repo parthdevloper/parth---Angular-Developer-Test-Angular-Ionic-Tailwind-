@@ -1,0 +1,30 @@
+ion-label {
+  font-size: 11px;
+}
+
+ion-tab-bar {
+  --border: none;
+  border-radius: 100px;
+  margin: 0 65px 15px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  height: 52px;
+}
+
+.tab-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+  
+  &.active {
+    background: var(--ion-color-primary);
+    color: #fff;
+  }
+  
+  ion-icon {
+    font-size: 1.25rem;
+  }
+}

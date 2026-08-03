@@ -1,0 +1,19 @@
+<ion-tabs (ionTabsWillChange)="onTabChange($event)">
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="currency">
+      <div class="tab-icon-wrap" [class.active]="activeTab === 'currency'">
+        <ion-icon name="wallet-outline"></ion-icon>
+      </div>
+    </ion-tab-button>
+    <ion-tab-button tab="home">
+      <div class="tab-icon-wrap" [class.active]="activeTab === 'home'">
+        <ion-icon name="home-outline"></ion-icon>
+      </div>
+    </ion-tab-button>
+    <ion-tab-button tab="analytics">
+      <div class="tab-icon-wrap" [class.active]="activeTab === 'analytics'">
+        <ion-icon name="stats-chart-outline"></ion-icon>
+      </div>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
