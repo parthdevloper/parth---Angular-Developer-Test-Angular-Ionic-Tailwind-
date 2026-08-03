@@ -1,0 +1,18 @@
+<div class="flex gap-1.5 h-[180px]">
+  <div class="w-8 h-full relative touch-none select-none" #container>
+    <div class="absolute left-1/2 -translate-x-1/2 w-1.5 h-full bg-gray-200 rounded-sm overflow-hidden">
+      <div class="absolute bottom-0 w-full bg-[#4361ee] rounded-sm" [style.height.%]="fillPercent()"></div>
+    </div>
+    <div 
+      class="absolute left-1/2 -translate-x-1/2 translate-y-1/2 w-[22px] h-[22px] bg-white rounded-full shadow-[0_2px_8px_rgba(67,97,238,0.3)] cursor-grab border border-gray-100" 
+      [class.cursor-grabbing]="isDragging()"
+      [style.bottom.%]="thumbPosition()"
+      (pointerdown)="onPointerDown($event)"
+    ></div>
+  </div>
+  <div class="flex flex-col-reverse justify-between py-1">
+    @for (label of labels(); track label) {
+      <span class="text-[11px] min-w-8 text-left text-gray-400">{{ label }}</span>
+    }
+  </div>
+</div>

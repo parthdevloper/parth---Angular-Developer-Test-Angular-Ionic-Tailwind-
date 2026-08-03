@@ -1,0 +1,30 @@
+:host {
+  display: block;
+}
+
+.skeleton-wrapper {
+  background: currentColor;
+  opacity: 0.1;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+
+  &.text { height: 16px; width: 100%; }
+  &.title { height: 24px; width: 60%; }
+  &.avatar { width: 44px; height: 44px; border-radius: 50%; }
+  &.card { height: 80px; width: 100%; border-radius: 16px; }
+  &.chart { height: 200px; width: 100%; border-radius: 16px; }
+  &.donut { width: 220px; height: 220px; border-radius: 50%; }
+}
+
+.skeleton-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
