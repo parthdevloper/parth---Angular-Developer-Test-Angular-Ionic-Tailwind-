@@ -1,0 +1,69 @@
+<ion-content class="ion-padding">
+  <div class="flex flex-col justify-center min-h-full px-6 py-10">
+    <div class="bg-white rounded-2xl p-6 shadow-sm">
+      <div class="text-center mb-10">
+        <div class="w-16 h-16 mx-auto mb-4 text-[var(--ion-color-primary)]">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h1 class="text-[28px] font-bold m-0 mb-1">Finance</h1>
+        <p class="text-sm opacity-60 m-0">Track your money</p>
+      </div>
+
+      <form class="max-w-xs mx-auto w-full" (ngSubmit)="handleLogin()">
+      <div class="relative mb-4 bg-[var(--ion-color-light)] rounded-xl flex items-center px-4">
+        <ion-icon name="person-outline" class="text-xl mr-3 opacity-50"></ion-icon>
+        <ion-input
+          type="text"
+          placeholder="Username"
+          [(ngModel)]="username"
+          name="username"
+          [disabled]="authService.loading()"
+          class="flex-1"
+        ></ion-input>
+      </div>
+
+      <div class="relative mb-4 bg-[var(--ion-color-light)] rounded-xl flex items-center px-4">
+        <ion-icon name="lock-closed-outline" class="text-xl mr-3 opacity-50"></ion-icon>
+        <ion-input
+          [type]="showPassword() ? 'text' : 'password'"
+          placeholder="Password"
+          [(ngModel)]="password"
+          name="password"
+          [disabled]="authService.loading()"
+          class="flex-1"
+        ></ion-input>
+        <ion-icon 
+          [name]="showPassword() ? 'eye-off-outline' : 'eye-outline'" 
+          class="text-xl cursor-pointer p-2 -mr-2 opacity-50"
+          (click)="showPassword.set(!showPassword())"
+        ></ion-icon>
+      </div>
+
+      @if (authService.error()) {
+        <div class="text-[var(--ion-color-danger)] py-3 px-4 rounded-lg text-[13px] mb-4 text-center">{{ authService.error() }}</div>
+      }
+
+      <ion-button 
+        expand="block" 
+        type="submit" 
+        class="login-btn"
+        [disabled]="authService.loading() || !username || !password"
+      >
+        @if (authService.loading()) {
+          <ion-spinner name="crescent"></ion-spinner>
+        } @else {
+          Sign In
+        }
+      </ion-button>
+      </form>
+    </div>
+
+    <div class="text-center mt-8 text-xs opacity-50">
+      <span>Demo: oliviaw / oliviawpass</span>
+    </div>
+  </div>
+</ion-content>
