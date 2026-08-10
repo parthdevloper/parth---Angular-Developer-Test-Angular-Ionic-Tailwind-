@@ -1,61 +1,151 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar class="px-2 !pt-1">
-    
-    <ion-buttons slot="start" class="header-btn">
-      <ion-back-button defaultHref="/home" text=""></ion-back-button>
-    </ion-buttons>
-    <ion-title>Currency</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="solid" class="header-btn w-[42px]! h-[42px]! rounded-full! shadow-md">
-        <ion-icon slot="icon-only" name="ellipsis-horizontal"  class="!text-lg"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="[--background:var(--page-bg)]" [scrollY]="false">
+  <div
+    class="relative box-border h-full overflow-hidden pt-[env(safe-area-inset-top,0px)] shadow-[inset_0_2px_40px_1px_rgba(120,180,230,0.18)] desk:flex desk:flex-col desk:py-56 desk:pr-64 desk:pl-[calc(var(--shell-pad)+var(--u)*56)]"
+  >
+    <div
+      class="relative mx-auto h-full w-[calc(var(--ux)*500)] max-w-full desk:flex desk:h-full desk:w-full desk:max-w-[var(--hdr-max-w)] desk:flex-col"
+    >
+      <div class="desk:mb-56 desk:flex desk:flex-none desk:items-center desk:gap-26">
+        <div
+          class="absolute top-[var(--hdr-y)] left-[var(--hdr-x)] h-[var(--hdr-size)] w-[var(--hdr-size)] overflow-hidden rounded-full bg-white shadow-[0_calc(var(--u)*6)_calc(var(--u)*18)_rgba(120,180,230,0.22)] desk:relative desk:top-auto desk:left-auto desk:flex-none"
+        >
+          <span class="absolute top-16 left-26 h-32 w-32 rounded-[calc(var(--u)*16)] bg-brand"></span>
+          <span
+            class="absolute top-54 left-14 h-44 w-56 rounded-t-[calc(var(--u)*28)] bg-brand"
+          ></span>
+        </div>
 
-<ion-content class="ion-padding">
-  <ion-segment value="lorem" class="mb-5" [@fadeIn]="loaded()">
-    <ion-segment-button value="lorem">Lorem</ion-segment-button>
-    <ion-segment-button value="ipsum">Ipsum</ion-segment-button>
-    <ion-segment-button value="dolor">Dolor</ion-segment-button>
-  </ion-segment>
+        <div class="desk:flex desk:flex-col desk:gap-6">
+          <span
+            class="absolute top-[calc(var(--hdr-y)+var(--u)*34.5)] left-[calc(var(--ux)*155)] text-[length:calc(var(--u)*27)] leading-[normal] font-extrabold whitespace-nowrap text-ink [transform:translateY(-50%)] desk:static desk:top-auto desk:left-auto desk:[transform:none]"
+            >{{ userName }}</span
+          >
+          <span
+            class="absolute top-[calc(var(--hdr-y)+var(--u)*66.5)] left-[calc(var(--ux)*155)] text-[length:calc(var(--u)*18)] leading-[normal] font-bold whitespace-nowrap text-ink [transform:translateY(-50%)] desk:static desk:top-auto desk:left-auto desk:[transform:none]"
+            >{{ userHandle }}</span
+          >
+        </div>
 
-  @if (dataService.selectedCardValue()) {
-  <div class="text-center py-4" [@fadeIn]="loaded()">
-      <span class="block text-[28px] font-bold" [appCountUp]="dataService.selectedCardValue()!"></span>
-      <span class="text-xs opacity-60">Selected</span>
-    </div>
-  }
-
-  <div class="bg-white rounded-2xl p-4 shadow-sm" [@fadeIn]="loaded()">
-    <ion-list lines="none" class="bg-transparent">
-      @for (item of dataService.currencies(); track item.code; let even = $even) {
-        <ion-item class="rounded-xl mb-2" [style.--background]="'rgba(67, 97, 238, 0.08)'">
-          <div class="flex flex-col">
-            <span class="font-semibold text-sm">{{ item.code }}</span>
-            <span class="text-[11px] opacity-60">{{ item.name }}</span>
-          </div>
-          <div class="text-right" slot="end">
-            <span class="block font-semibold text-sm">{{ item.rate | number:'1.2-2' }}</span>
-            <span class="text-[11px] flex items-center gap-0.5" 
-                [class.up]="item.trend === 'up'" 
-                [class.down]="item.trend === 'down'">
-              <ion-icon [name]="item.trend === 'up' ? 'arrow-up' : 'arrow-down'"></ion-icon>
-              {{ item.change | number:'1.2-2' }}%
-            </span>
-          </div>
-        </ion-item>
-      }
-    </ion-list>
-
-    @defer (on viewport) {
-      <div class="h-[200px] mt-4" @fadeIn>
-        <canvas #chartCanvas class="w-full! h-full!"></canvas>
+        <button
+          type="button"
+          class="absolute top-[var(--hdr-y)] right-[var(--hdr-x)] m-0 flex h-[var(--hdr-size)] w-[var(--hdr-size)] cursor-pointer appearance-none items-center justify-center gap-8 rounded-full border-0 bg-white p-0 font-control text-inherit [filter:drop-shadow(0_calc(var(--u)*6)_calc(var(--u)*9)_rgba(120,180,230,0.22))] [transition:transform_0.18s_ease] active:[transform:scale(0.94)] disabled:cursor-default desk:static desk:top-auto desk:right-auto desk:ml-auto desk:flex-none desk:[transform:none]"
+          aria-label="More options"
+          disabled
+        >
+          <span class="h-12 w-12 rounded-[calc(var(--u)*6)] bg-brand"></span>
+          <span class="h-12 w-12 rounded-[calc(var(--u)*6)] bg-brand"></span>
+          <span class="h-12 w-12 rounded-[calc(var(--u)*6)] bg-brand"></span>
+        </button>
       </div>
-    } @placeholder {
-      <app-skeleton variant="chart" />
-    } @loading (minimum 300ms) {
-      <app-skeleton variant="chart" />
-    }
+
+      <div
+        class="desk:grid desk:min-h-0 desk:flex-auto desk:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] desk:content-center desk:items-center desk:gap-x-80"
+      >
+        <div class="desk:flex desk:flex-col desk:gap-44">
+          <div
+            class="absolute top-192 left-[calc(var(--ux)*30)] flex h-86 w-[calc(var(--ux)*440)] items-center rounded-[calc(var(--u)*22)] bg-[rgba(255,255,255,0.88)] pl-[calc(var(--ux)*32)] shadow-[0_calc(var(--u)*8)_calc(var(--u)*22)_rgba(120,180,230,0.18)] desk:static desk:top-auto desk:left-auto desk:w-auto"
+            [@fadeIn]="loaded()"
+          >
+            <input
+              class="w-full border-0 bg-transparent p-0 font-control text-[length:calc(var(--u)*26)] leading-[normal] font-extrabold text-ink outline-none placeholder:text-ink placeholder:opacity-100"
+              type="text"
+              placeholder="Lorem ipsum"
+              aria-label="Search"
+            />
+          </div>
+
+          <div class="desk:grid desk:grid-cols-2 desk:gap-34">
+            <button
+              type="button"
+              class="absolute top-325 left-[calc(var(--ux)*30)] m-0 flex h-123 w-[calc(var(--ux)*198)] cursor-pointer appearance-none flex-col items-center justify-center gap-8 rounded-[calc(var(--u)*20)] border-0 bg-[rgba(255,255,255,0.88)] p-0 font-control text-center text-inherit shadow-[0_calc(var(--u)*8)_calc(var(--u)*22)_rgba(120,180,230,0.18)] [transition:transform_0.18s_ease,box-shadow_0.18s_ease] active:[transform:scale(0.97)] desk:static desk:top-auto desk:left-auto desk:w-auto"
+              [@fadeIn]="loaded()"
+              (click)="showRates(dataService.leftSliderValue())"
+            >
+              <span
+                class="text-[length:calc(var(--u)*34)] leading-[normal] font-extrabold whitespace-nowrap text-ink"
+                >${{ dataService.leftSliderValue() }}</span
+              >
+              <span
+                class="text-[length:calc(var(--u)*17)] leading-[normal] font-normal whitespace-nowrap text-muted"
+                >Lorem ipsum dolor</span
+              >
+            </button>
+            <button
+              type="button"
+              class="absolute top-325 left-[calc(var(--ux)*272)] m-0 flex h-123 w-[calc(var(--ux)*198)] cursor-pointer appearance-none flex-col items-center justify-center gap-8 rounded-[calc(var(--u)*20)] border-0 bg-[rgba(255,255,255,0.88)] p-0 font-control text-center text-inherit shadow-[0_calc(var(--u)*8)_calc(var(--u)*22)_rgba(120,180,230,0.18)] [transition:transform_0.18s_ease,box-shadow_0.18s_ease] active:[transform:scale(0.97)] desk:static desk:top-auto desk:left-auto desk:w-auto"
+              [@fadeIn]="loaded()"
+              (click)="showRates(dataService.rightSliderValue())"
+            >
+              <span
+                class="text-[length:calc(var(--u)*34)] leading-[normal] font-extrabold whitespace-nowrap text-ink"
+                >${{ dataService.rightSliderValue() }}</span
+              >
+              <span
+                class="text-[length:calc(var(--u)*17)] leading-[normal] font-normal whitespace-nowrap text-muted"
+                >Lorem ipsum dolor</span
+              >
+            </button>
+          </div>
+
+          <button
+            type="button"
+            class="absolute top-868 left-[calc(var(--ux)*103)] m-0 flex h-89 w-[calc(var(--ux)*297)] cursor-pointer appearance-none items-center justify-center rounded-[calc(var(--u)*45)] border-0 bg-transparent bg-[linear-gradient(100deg,#2aa6f6_0%,#1490f3_55%,#0b83f2_100%)] p-0 font-control text-[length:calc(var(--u)*29)] leading-[normal] font-extrabold tracking-[0.5px] text-white [filter:drop-shadow(0_calc(var(--u)*10)_calc(var(--u)*13)_rgba(26,140,240,0.38))] [transition:transform_0.18s_ease] active:[transform:scale(0.97)] desk:static desk:top-auto desk:left-auto desk:w-full desk:max-w-420"
+            (click)="openAnalytics()"
+          >
+            LOREM IPSUM
+          </button>
+        </div>
+
+        <div
+          class="absolute top-503 right-[calc(var(--ux)*30)] left-[calc(var(--ux)*30)] grid grid-cols-2 items-start justify-items-center gap-x-[calc(var(--ux)*44)] desk:static desk:top-auto desk:right-auto desk:left-auto desk:gap-40"
+        >
+          <div class="flex items-start gap-[calc(var(--ux)*27)] desk:gap-30">
+            <app-vertical-slider
+              class="flex-none"
+              label="Lorem"
+              [min]="sliderMin"
+              [max]="sliderMax"
+              [step]="sliderStep"
+              [value]="dataService.leftSliderValue()"
+              (valueChange)="dataService.setLeftSlider($event)"
+            />
+            <div class="flex flex-none flex-col gap-36 pt-17">
+              @for (tick of ticks; track tick) {
+                <div class="flex h-26 items-center gap-[calc(var(--ux)*20)]">
+                  <span class="h-3 w-[calc(var(--ux)*26)] flex-none bg-brand"></span>
+                  <span
+                    class="text-[length:calc(var(--u)*26)] leading-[normal] font-bold whitespace-nowrap text-ink"
+                    >{{ tick }}</span
+                  >
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="flex items-start gap-[calc(var(--ux)*27)] desk:gap-30">
+            <app-vertical-slider
+              class="flex-none"
+              label="Ipsum"
+              [min]="sliderMin"
+              [max]="sliderMax"
+              [step]="sliderStep"
+              [value]="dataService.rightSliderValue()"
+              (valueChange)="dataService.setRightSlider($event)"
+            />
+            <div class="flex flex-none flex-col gap-36 pt-17">
+              @for (tick of ticks; track tick) {
+                <div class="flex h-26 items-center gap-[calc(var(--ux)*20)]">
+                  <span class="h-3 w-[calc(var(--ux)*26)] flex-none bg-brand"></span>
+                  <span
+                    class="text-[length:calc(var(--u)*26)] leading-[normal] font-bold whitespace-nowrap text-ink"
+                    >{{ tick }}</span
+                  >
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </ion-content>

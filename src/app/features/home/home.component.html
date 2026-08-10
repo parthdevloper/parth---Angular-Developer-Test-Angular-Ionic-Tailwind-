@@ -1,96 +1,151 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar class="px-2 !pt-1">
-    <div class="pl-0 mr-2">
-      <div class="flex items-center gap-2.5 bg-white py-[5px] pr-3.5 pl-[5px] rounded-[26px] shadow-sm">
-        <ion-avatar class="w-9 h-9 bg-blue-500/10 flex items-center justify-center">
-          <img [src]="userAvatar()" alt="avatar" />
-        </ion-avatar>
-        <div class="flex flex-col">
-          <span class="text-sm font-semibold text-slate-800">{{ userName() }}</span>
-          <span class="text-[11px] text-slate-400">Personal account</span>
-        </div>
-      </div>
-    </div>
-    <ion-buttons slot="end">
-      <ion-button fill="solid" class="header-btn w-[42px]! h-[42px]! rounded-full! shadow-md" (click)="onLogout()">
-        <ion-icon slot="icon-only" name="log-out-outline" class="!text-lg"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="ion-padding">
-  <div class="mb-5" [@fadeIn]="loaded()">
-    <div class="flex items-center bg-white rounded-2xl px-4 py-1 shadow-sm">
-      <ion-icon name="search-outline" class="text-xl mr-3 text-slate-300"></ion-icon>
-      <ion-input placeholder="Search..." class="flex-1"></ion-input>
-    </div>
-  </div>
-
-  <div class="flex gap-4 mb-6" [@fadeIn]="loaded()">
-    <ion-card 
-      class="flex-1 m-0 rounded-2xl" 
-      [class.pressed]="pressedCard() === 'left'"
-      (pointerdown)="pressedCard.set('left')"
-      (pointerup)="onCardClick(dataService.leftSliderValue()); pressedCard.set(null)"
-      (pointerleave)="pressedCard.set(null)"
-      button
-    >
-      <ion-card-content>
-        <div class="flex flex-col items-center">
-          <span class="text-xs mb-1.5 opacity-60">Lorem</span>
-          <span class="text-2xl font-bold" [appCountUp]="dataService.leftSliderValue()"></span>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card 
-      class="flex-1 m-0 rounded-2xl" 
-      [class.pressed]="pressedCard() === 'right'"
-      (pointerdown)="pressedCard.set('right')"
-      (pointerup)="onCardClick(dataService.rightSliderValue()); pressedCard.set(null)"
-      (pointerleave)="pressedCard.set(null)"
-      button
-    >
-      <ion-card-content>
-        <div class="flex flex-col items-center">
-          <span class="text-xs mb-1.5 opacity-60">Ipsum</span>
-          <span class="text-2xl font-bold" [appCountUp]="dataService.rightSliderValue()"></span>
-        </div>
-      </ion-card-content>
-    </ion-card>
-  </div>
-
-  <ion-card class="m-0 mb-6" [@fadeIn]="loaded()">
-    <ion-card-content>
-      <div class="flex justify-center items-center gap-12 py-4">
-        <app-vertical-slider 
-          [value]="dataService.leftSliderValue()" 
-          [min]="0" 
-          [max]="2500"
-          [step]="500"
-          (valueChange)="dataService.setLeftSlider($event)"
-        />
-        <div class="w-px h-[140px] bg-gray-200"></div>
-        <app-vertical-slider 
-          [value]="dataService.rightSliderValue()" 
-          [min]="0" 
-          [max]="2500"
-          [step]="500"
-          (valueChange)="dataService.setRightSlider($event)"
-        />
-      </div>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-button 
-    expand="block" 
-    class="h-[52px] font-semibold text-sm tracking-wide rounded-2xl"
-    [class.pressed]="ctaPressed()"
-    (pointerdown)="ctaPressed.set(true)"
-    (pointerup)="onCtaClick(); ctaPressed.set(false)"
-    (pointerleave)="ctaPressed.set(false)"
+<ion-content class="[--background:var(--page-bg)]" [scrollY]="false">
+  <div
+    class="flex h-full flex-col overflow-hidden px-[max(0px,calc((100%-var(--ux)*500)/2))] pb-0 shadow-[inset_0_2px_40px_1px_rgba(120,180,230,0.18)] desk:py-56 desk:pr-64 desk:pl-[calc(var(--shell-pad)+var(--u)*56)]"
   >
-    LOREM IPSUM
-  </ion-button>
+    <div
+      class="flex flex-none items-center justify-between px-[var(--hdr-x)] pt-[calc(env(safe-area-inset-top,0px)+var(--hdr-y))] pb-0 desk:mx-auto desk:mb-48 desk:w-full desk:max-w-[var(--hdr-max-w)] desk:p-0"
+    >
+      <button
+        type="button"
+        class="m-0 flex h-[var(--hdr-size)] w-[var(--hdr-size)] cursor-pointer appearance-none items-center justify-center rounded-full border-0 bg-white p-0 font-control text-inherit [filter:drop-shadow(0_calc(var(--u)*6)_calc(var(--u)*9)_rgba(120,180,230,0.22))] [transition:transform_0.18s_ease] active:[transform:scale(0.94)]"
+        aria-label="Back"
+        (click)="goBack()"
+      >
+        <img src="assets/icons/chevron-left.svg" alt="" class="block h-42 w-26" />
+      </button>
+      <button
+        type="button"
+        class="m-0 flex h-[var(--hdr-size)] w-[var(--hdr-size)] cursor-pointer appearance-none items-center justify-center gap-8 rounded-full border-0 bg-white p-0 font-control text-inherit [filter:drop-shadow(0_calc(var(--u)*6)_calc(var(--u)*9)_rgba(120,180,230,0.22))] [transition:transform_0.18s_ease] active:[transform:scale(0.94)] disabled:cursor-default"
+        aria-label="More options"
+        disabled
+      >
+        <span class="h-12 w-12 rounded-full bg-brand"></span>
+        <span class="h-12 w-12 rounded-full bg-brand"></span>
+        <span class="h-12 w-12 rounded-full bg-brand"></span>
+      </button>
+    </div>
+
+    <div
+      class="flex min-h-0 flex-auto flex-col desk:mx-auto desk:grid desk:w-full desk:max-w-[var(--hdr-max-w)] desk:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] desk:grid-rows-[auto_auto] desk:content-center desk:items-start desk:gap-x-64 desk:gap-y-28"
+    >
+      <div
+        class="flex flex-none px-[calc(var(--ux)*24)] pt-46 pb-0 desk:col-start-1 desk:row-start-1 desk:p-0"
+        [@fadeIn]="loaded()"
+      >
+        @for (heading of columnHeadings; track heading) {
+          <span
+            class="min-w-0 flex-1 text-center text-[length:calc(var(--u)*26)] leading-[normal] font-extrabold text-ink"
+            >{{ heading }}</span
+          >
+        }
+      </div>
+
+      <div
+        class="flex flex-none flex-col gap-34 px-[calc(var(--ux)*24)] pt-34 pb-0 desk:col-start-1 desk:row-start-2 desk:gap-30 desk:p-0"
+        [@fadeIn]="loaded()"
+      >
+        @for (row of rows; track row.code) {
+          @let active = row.code === activeCode;
+          <button
+            type="button"
+            class="m-0 flex h-125 w-full flex-none cursor-pointer appearance-none overflow-hidden rounded-[calc(var(--u)*16)] border-0 p-0 font-control text-inherit [transition:transform_0.18s_ease,box-shadow_0.18s_ease] active:[transform:scale(0.985)] disabled:cursor-default"
+            [class]="
+              active
+                ? 'bg-transparent shadow-[0_calc(var(--u)*8)_calc(var(--u)*22)_rgba(90,160,230,0.28)]'
+                : 'bg-[rgba(255,255,255,0.82)] shadow-[0_calc(var(--u)*8)_calc(var(--u)*22)_rgba(120,180,230,0.18)]'
+            "
+            disabled
+          >
+            <span
+              class="flex min-w-0 flex-1 items-center justify-center text-[length:calc(var(--u)*38)] leading-[normal] font-extrabold tracking-[0.5px]"
+              [class]="
+                active ? 'bg-[linear-gradient(135deg,#3fb2f7_0%,#22a1f5_100%)] text-white' : 'text-ink'
+              "
+              >{{ row.code }}</span
+            >
+            @for (cell of row.cells; track $index; let idx = $index) {
+              <span
+                class="flex min-w-0 flex-1 flex-col items-center justify-center gap-6 border-l"
+                [class]="
+                  active
+                    ? (idx === 1
+                        ? 'border-l-[rgba(255,255,255,0.35)] bg-[linear-gradient(135.19deg,#1d8ef2_0%,#0f7ff0_100%)]'
+                        : 'border-l-[rgba(255,255,255,0.35)] bg-[linear-gradient(135.19deg,#2ba5f6_0%,#189cf4_100%)]')
+                    : 'border-l-[rgba(150,195,235,0.45)]'
+                "
+              >
+                <span class="flex items-center gap-[calc(var(--ux)*8)]">
+                  <span
+                    class="block h-24 w-14 flex-none [mask-repeat:no-repeat] [mask-size:100%_100%] [-webkit-mask-repeat:no-repeat] [-webkit-mask-size:100%_100%]"
+                    [class]="
+                      (cell.trend === 'up'
+                        ? '[mask-image:url(/assets/icons/arrow-up.svg)] [-webkit-mask-image:url(/assets/icons/arrow-up.svg)]'
+                        : '[mask-image:url(/assets/icons/arrow-down.svg)] [-webkit-mask-image:url(/assets/icons/arrow-down.svg)]') +
+                      (active ? ' bg-white' : ' bg-brand')
+                    "
+                  ></span>
+                  <span
+                    class="text-[length:calc(var(--u)*27)] leading-[normal] font-extrabold"
+                    [class]="active ? 'text-white' : 'text-ink'"
+                    >{{ cell.value | number: '1.3-3' }}</span
+                  >
+                </span>
+                <span
+                  class="text-[length:calc(var(--u)*22)] leading-[normal] font-normal"
+                  [class]="active ? 'text-white' : 'text-muted'"
+                  >{{ cell.change | number: '1.3-3' }}</span
+                >
+              </span>
+            }
+          </button>
+        }
+      </div>
+
+      <div class="max-h-67 min-h-24 flex-auto desk:hidden"></div>
+
+      <div
+        class="flex flex-none flex-col gap-18 mx-[calc(var(--ux)*3)] my-0 rounded-t-[calc(var(--u)*52)] bg-[linear-gradient(150deg,#2aa6f6_0%,#1490f3_55%,#0b83f2_100%)] px-[calc(var(--ux)*34)] pt-24 pb-[calc(var(--u)*41+var(--bar-reserve))] [filter:drop-shadow(0_calc(var(--u)*10)_calc(var(--u)*15)_rgba(60,150,230,0.32))] desk:col-start-2 desk:row-start-1 desk:row-span-2 desk:m-0 desk:self-stretch desk:rounded-[calc(var(--u)*22)] desk:pb-34"
+        [@fadeIn]="loaded()"
+      >
+        <div class="flex items-center justify-between">
+          <span class="text-[length:calc(var(--u)*26)] leading-[normal] font-normal text-white">{{
+            chartTitle
+          }}</span>
+          <button
+            type="button"
+            class="m-0 flex cursor-pointer appearance-none items-center border-0 bg-transparent p-0 font-control text-inherit disabled:cursor-default"
+            aria-label="Expand"
+            disabled
+          >
+            <img src="assets/icons/chevron-down.svg" alt="" class="block h-20 w-34" />
+          </button>
+        </div>
+
+        <div
+          class="box-border flex h-131 items-end gap-[calc(var(--ux)*47)] border-l-2 border-l-[rgba(255,255,255,0.5)] pt-10 pr-0 pb-0 pl-[calc(var(--ux)*42)] desk:h-auto desk:min-h-180 desk:flex-auto"
+        >
+          @for (group of chartGroups(); track $index) {
+            <div class="flex h-full items-end gap-[calc(var(--ux)*18)]">
+              @for (bar of group; track $index) {
+                <span
+                  class="w-[calc(var(--ux)*33)] flex-none rounded-t-[calc(var(--u)*6)] bg-[linear-gradient(180deg,#ffffff_0%,#b6e2fb_100%)] [transition:height_0.6s_cubic-bezier(0.22,1,0.36,1)] desk:w-38"
+                  [style.height.%]="loaded() ? bar : 0"
+                ></span>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="relative h-33">
+          @for (label of chartLabels; track label.text) {
+            <span
+              class="absolute top-0 w-[calc(100%*100/426)] text-center text-[length:calc(var(--u)*24)] leading-[normal] font-normal text-white"
+              [style.left.%]="label.left"
+              >{{ label.text }}</span
+            >
+          }
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>

@@ -1,54 +1,130 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar class="px-2 !pt-1">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" text=""></ion-back-button>
-    </ion-buttons>
-    <ion-title>Analytics</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="solid" class="header-btn w-[42px]! h-[42px]! rounded-full! shadow-md">
-        <ion-icon slot="icon-only" name="settings-outline"  class="!text-lg"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-content
+  class="[--background:linear-gradient(160.04deg,#cbe9fb_0%,#c1e5fa_50%,#bbe1f9_100%)]"
+  [scrollY]="false"
+>
+  <div
+    class="relative box-border h-full overflow-hidden pt-[env(safe-area-inset-top,0px)] shadow-[inset_0_2px_40px_1px_rgba(120,180,230,0.18)] desk:flex desk:flex-col desk:py-56 desk:pr-64 desk:pl-[calc(var(--shell-pad)+var(--u)*56)]"
+  >
+    <div
+      class="relative mx-auto h-full w-[calc(var(--ux)*500)] max-w-full desk:flex desk:h-full desk:w-full desk:max-w-[var(--hdr-max-w)] desk:flex-col"
+    >
+      <div class="desk:mb-64 desk:flex desk:flex-none desk:items-center">
+        <button
+          type="button"
+          class="absolute top-[var(--hdr-y)] left-[var(--hdr-x)] m-0 flex h-[var(--hdr-size)] w-[var(--hdr-size)] cursor-pointer appearance-none items-center justify-center rounded-full border-0 bg-white p-0 font-control text-inherit [filter:drop-shadow(0_calc(var(--u)*6)_calc(var(--u)*9)_rgba(120,180,230,0.22))] [transition:transform_0.18s_ease] active:[transform:scale(0.94)] desk:static desk:top-auto desk:left-auto"
+          aria-label="Back"
+          (click)="goBack()"
+        >
+          <img src="assets/icons/chevron-left.svg" alt="" class="block h-42 w-26" />
+        </button>
 
-<ion-content class="ion-padding">
-  <div class="bg-white rounded-2xl p-4 shadow-sm mb-5" [@fadeIn]="loaded()">
-    <div class="text-center mb-6">
-      <span class="block text-xs mb-1">Total Balance</span>
-      <span class="text-3xl font-bold" [appCountUp]="dataService.analyticsData().total"></span>
-    </div>
+        <button
+          type="button"
+          class="absolute top-[var(--hdr-y)] right-[var(--hdr-x)] m-0 flex h-[var(--hdr-size)] w-[var(--hdr-size)] cursor-pointer appearance-none items-center justify-center rounded-full border-0 bg-white p-0 font-control text-inherit [filter:drop-shadow(0_calc(var(--u)*6)_calc(var(--u)*9)_rgba(120,180,230,0.22))] [transition:transform_0.18s_ease] active:[transform:scale(0.94)] desk:static desk:top-auto desk:left-auto desk:ml-auto"
+          aria-label="Settings"
+        >
+          <img src="assets/icons/gear.svg" alt="" class="block h-46 w-46" />
+        </button>
+      </div>
 
-    <div class="flex justify-center mb-6">
-      <div class="relative w-[220px] h-[220px]">
-        <canvas #chartCanvas class="w-full! h-full!"></canvas>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <span class="block text-xl font-bold" [appCountUp]="dataService.analyticsData().spent"></span>
-          <span class="text-xs opacity-60">{{ dataService.analyticsData().percentage }}%</span>
+      <div
+        class="desk:grid desk:min-h-0 desk:w-full desk:max-w-1150 desk:flex-auto desk:grid-cols-[minmax(0,1fr)_auto] desk:content-center desk:items-center desk:gap-x-90"
+      >
+        <div class="desk:flex desk:flex-col desk:items-start">
+          <span
+            class="absolute top-140 right-0 left-0 text-center text-[length:calc(var(--u)*47)] leading-[normal] font-extrabold whitespace-nowrap text-ink desk:static desk:top-auto desk:left-auto desk:text-left desk:text-[length:calc(var(--u)*64)]"
+            [appCountUp]="dataService.analyticsData().total"
+          ></span>
+          <span
+            class="absolute top-204 right-0 left-0 text-center text-[length:calc(var(--u)*23)] leading-[normal] font-normal whitespace-nowrap text-ink-soft desk:static desk:top-auto desk:left-auto desk:text-left"
+            >Lorem ipsum dolot</span
+          >
+
+          <span
+            class="absolute top-654 right-0 left-0 text-center text-[length:calc(var(--u)*23)] leading-[normal] font-normal whitespace-nowrap text-ink-soft desk:static desk:top-auto desk:left-auto desk:mt-52 desk:text-left"
+            >Lorem ipsum dolot</span
+          >
+          <span
+            class="absolute top-706 right-0 left-0 text-center text-[length:calc(var(--u)*36)] leading-[normal] whitespace-nowrap desk:static desk:top-auto desk:left-auto desk:mt-10 desk:text-left"
+          >
+            <span class="font-extrabold text-ink" [appCountUp]="selected().value"></span>
+            <span class="text-[length:calc(var(--u)*26)] font-bold text-muted-blue"
+              >&nbsp;/ {{ selected().share }}%</span
+            >
+          </span>
+
+          <div
+            class="absolute top-774 right-0 left-0 flex items-center justify-center gap-13 desk:static desk:top-auto desk:left-auto desk:mt-28 desk:justify-start"
+          >
+            @for (dot of dotSlots; track dot) {
+              <span
+                class="h-11 w-11 rounded-[calc(var(--u)*5.5)] [transition:background-color_0.2s_ease]"
+                [class]="dot === selectedIndex() ? 'bg-white' : 'bg-brand'"
+              ></span>
+            }
+          </div>
+
+          <div
+            class="absolute top-840 left-[calc(var(--ux)*32)] flex h-68 w-[calc(var(--ux)*438)] rounded-[calc(var(--u)*34)] bg-[linear-gradient(100deg,#2aa6f6_0%,#1490f3_55%,#0b83f2_100%)] [filter:drop-shadow(0_calc(var(--u)*8)_calc(var(--u)*11)_rgba(26,140,240,0.28))] desk:relative desk:top-auto desk:left-auto desk:mt-48"
+            [@fadeIn]="loaded()"
+          >
+            <span
+              class="absolute top-6 left-[calc(var(--ux)*var(--pill-x,147))] h-56 w-[calc(var(--ux)*var(--pill-w,139))] rounded-[calc(var(--u)*28)] bg-white shadow-[0_calc(var(--u)*4)_calc(var(--u)*12)_rgba(90,160,230,0.25)] [transition:left_0.25s_cubic-bezier(0.22,1,0.36,1),width_0.25s_cubic-bezier(0.22,1,0.36,1)]"
+              [style.--pill-x]="pill()[0]"
+              [style.--pill-w]="pill()[1]"
+            ></span>
+            @for (item of dataService.analyticsData().breakdown; track item.label; let i = $index) {
+              <button
+                type="button"
+                class="relative m-0 h-full flex-none cursor-pointer appearance-none border-0 bg-transparent p-0 font-control text-[length:calc(var(--u)*23)] leading-[normal] font-extrabold uppercase [transition:color_0.2s_ease] [&:nth-of-type(1)]:w-[calc(var(--ux)*147)] [&:nth-of-type(2)]:w-[calc(var(--ux)*139)] [&:nth-of-type(3)]:w-[calc(var(--ux)*152)]"
+                [class]="i === selectedIndex() ? 'text-ink' : 'text-white'"
+                (click)="selectedIndex.set(i)"
+              >
+                {{ item.label }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <div>
+          <div
+            class="absolute top-287 right-0 left-0 mx-auto h-328 w-328 desk:relative desk:top-auto desk:right-auto desk:left-auto desk:mx-0 desk:h-400 desk:w-400"
+            [@fadeIn]="loaded()"
+          >
+            <div class="absolute inset-0 rounded-full bg-[rgba(255,255,255,0.28)]"></div>
+
+            <svg
+              class="absolute top-[11.5854%] left-[11.5854%] h-[76.8293%] w-[76.8293%] [transform:rotate(-90deg)]"
+              viewBox="0 0 252 252"
+              aria-hidden="true"
+            >
+              <defs>
+                <linearGradient id="donut-blue" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#2aa6f6" />
+                  <stop offset="1" stop-color="#0b83f2" />
+                </linearGradient>
+              </defs>
+              @for (seg of segments(); track seg.label) {
+                <circle
+                  class="[fill:none] [stroke-linecap:butt] [stroke-width:48] [transition:stroke-dasharray_0.7s_cubic-bezier(0.22,1,0.36,1),stroke_0.3s_ease]"
+                  cx="126"
+                  cy="126"
+                  [attr.r]="ringRadius"
+                  [attr.stroke]="seg.paint"
+                  [attr.stroke-dasharray]="
+                    loaded() ? seg.dash + ' ' + (ringLength - seg.dash) : '0 ' + ringLength
+                  "
+                  [attr.stroke-dashoffset]="-seg.offset"
+                />
+              }
+            </svg>
+
+            <div
+              class="absolute top-[26.2195%] left-[26.2195%] h-[47.561%] w-[47.561%] rounded-full bg-[#c3e6fa]"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="flex flex-col gap-3 mb-5">
-      @for (item of dataService.analyticsData().breakdown; track item.label; let even = $even) {
-        <div class="rounded-xl p-3 flex items-center" [style.background]="'rgba(67, 97, 238, 0.08)'">
-          <div class="size-3 rounded-full mr-3" [style.background]="item.color"></div>
-          <span class="flex-1 text-[13px]">{{ item.label }}</span>
-          <span class="font-semibold text-sm" [appCountUp]="item.value"></span>
-        </div>
-      }
-    </div>
-
-    <div class="flex justify-center gap-2">
-      <span class="w-5 h-2 rounded-sm bg-[var(--ion-color-primary)]"></span>
-      <span class="size-2 rounded-full bg-current opacity-20"></span>
-      <span class="size-2 rounded-full bg-current opacity-20"></span>
-    </div>
   </div>
-
-  <ion-segment value="lorem" [@fadeIn]="loaded()">
-    <ion-segment-button value="lorem">LOREM</ion-segment-button>
-    <ion-segment-button value="ipsum">IPSUM</ion-segment-button>
-    <ion-segment-button value="dolor">DOLOR</ion-segment-button>
-  </ion-segment>
 </ion-content>

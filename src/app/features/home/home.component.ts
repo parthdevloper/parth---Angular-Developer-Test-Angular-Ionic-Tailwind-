@@ -1,70 +1,78 @@
-import { Component, inject, signal, computed, afterNextRender, HostBinding, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
-import { 
-  IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonIcon,
-  IonCard, IonCardContent, IonAvatar, IonInput 
-} from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { menuOutline, logOutOutline, searchOutline, ellipsisHorizontal } from 'ionicons/icons';
-import { VerticalSliderComponent } from '../../shared/components/vertical-slider/vertical-slider.component';
-import { CountUpDirective } from '../../shared/directives/count-up.directive';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { IonContent } from '@ionic/angular/standalone';
 import { DataService } from '../../core/services/data.service';
-import { AuthService } from '../../core/services/auth.service';
-import { NavDirectionService } from '../../core/services/nav-direction.service';
+import { TabPage } from '../../shared/tab-page.base';
 import { fadeIn, tabEntry } from '../../shared/animations/route.animations';
+
+interface RateCell {
+  value: number;
+  change: number;
+  trend: 'up' | 'down';
+}
+
+interface RateRow {
+  code: string;
+  cells: RateCell[];
+}
+
+const ROWS: RateRow[] = [
+  {
+    code: 'USD',
+    cells: [
+      { value: 23.568, change: -0.146, trend: 'down' },
+      { value: 36.143, change: -0.056, trend: 'down' }
+    ]
+  },
+  {
+    code: 'EUR',
+    cells: [
+      { value: 17.376, change: -0.056, trend: 'up' },
+      { value: 21.113, change: -0.087, trend: 'up' }
+    ]
+  },
+  {
+    code: 'GBP',
+    cells: [
+      { value: 12.766, change: -0.056, trend: 'down' },
+      { value: 36.076, change: -0.087, trend: 'down' }
+    ]
+  }
+];
+
+const PLOT_HEIGHT = 121;
+const PLOT_WIDTH = 426;
+
+const asPercent = (px: number, of: number) => (px / of) * 100;
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    IonHeader, IonToolbar, IonContent, IonButton, IonButtons, IonIcon,
-    IonCard, IonCardContent, IonAvatar, IonInput,
-    VerticalSliderComponent, CountUpDirective
-  ],
+  imports: [IonContent, DecimalPipe],
   animations: [fadeIn, tabEntry],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
-  protected dataService = inject(DataService);
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private navDirection = inject(NavDirectionService);
+export class HomeComponent extends TabPage {
+  private dataService = inject(DataService);
 
-  @HostBinding('@tabEntry') get slideIn() { return this.navDirection.direction(); }
+  readonly rows = ROWS;
+  readonly activeCode = 'USD';
+  readonly columnHeadings = ['Lorem', 'Ipsum', 'Dolor'];
+  readonly chartTitle = 'Lorem ipsum 2021';
 
-  loaded = signal(false);
-  pressedCard = signal<'left' | 'right' | null>(null);
-  ctaPressed = signal(false);  // for btn press effect
+  readonly chartLabels = [
+    { text: 'Sit', left: asPercent(2, PLOT_WIDTH) },
+    { text: 'Ipsum', left: asPercent(150, PLOT_WIDTH) },
+    { text: 'Dolor', left: asPercent(279, PLOT_WIDTH) }
+  ];
 
-  // pull user info from auth service
-  userName = computed(() => {
-    const user = this.authService.user();
-    return user ? `${user.firstName} ${user.lastName}` : 'Guest';
-  });
+  readonly chartGroups = computed(() =>
+    this.dataService.chartBars().map(group => group.map(h => asPercent(h, PLOT_HEIGHT)))
+  );
 
-  userAvatar = computed(() => {
-    const user = this.authService.user();
-    return user?.image || 'https://i.pravatar.cc/100?img=3';
-  });
-
-  constructor() {
-    addIcons({ menuOutline, logOutOutline, searchOutline, ellipsisHorizontal });
-    afterNextRender(() => this.loaded.set(true));
-  }
-
-  onCardClick(value: number) {
-    this.dataService.selectCard(value);
-    this.router.navigate(['/currency']);
-  }
-
-  onCtaClick() {
-    this.router.navigate(['/analytics']);
-  }
-
-  onLogout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  goBack() {
+    this.navigate('/currency', 'back');
   }
 }

@@ -1,20 +1,15 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, afterNextRender, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import {
-  IonContent, IonInput, IonButton, IonSpinner, IonIcon
-} from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { eyeOutline, eyeOffOutline, personOutline, lockClosedOutline } from 'ionicons/icons';
+import { IonContent, IonSpinner } from '@ionic/angular/standalone';
 import { AuthService } from '../../core/services/auth.service';
+import { fadeIn } from '../../shared/animations/route.animations';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    FormsModule,
-    IonContent, IonInput, IonButton, IonSpinner, IonIcon
-  ],
+  imports: [FormsModule, IonContent, IonSpinner],
+  animations: [fadeIn],
   templateUrl: './login.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './login.component.scss'
@@ -25,21 +20,20 @@ export class LoginComponent {
 
   username = '';
   password = '';
-  showPassword = signal(false);  // toggle pw visibility
+  showPassword = signal(false);
+  loaded = signal(false);
 
   constructor() {
-    addIcons({ eyeOutline, eyeOffOutline, personOutline, lockClosedOutline });
-    
-    // redirect if already logged in
     if (this.authService.isAuthenticated()) {
-      // console.log('LoginComponent: user is already authenticated, redirecting to /home');
       this.router.navigate(['/home']);
     }
+
+    afterNextRender(() => this.loaded.set(true));
   }
 
   async handleLogin() {
     if (!this.username || !this.password) return;
-    
+
     const success = await this.authService.login(this.username, this.password);
     if (success) {
       this.router.navigate(['/home']);
