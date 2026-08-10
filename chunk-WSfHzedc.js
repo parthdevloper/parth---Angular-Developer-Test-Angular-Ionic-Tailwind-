@@ -1,1 +1,0 @@
-import{n as J,r as ne}from"./chunk-HpZc_IKx.js";export{ne as createGesture};

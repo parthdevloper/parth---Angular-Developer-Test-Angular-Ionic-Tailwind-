@@ -1,0 +1,1 @@
+import{Q as k,W as et}from"./main-7GTLGEGN.js";var t=class o{direction=et(`forward`);static ɵfac=function(a){return new(a||o)};static ɵprov=k({token:o,factory:o.ɵfac,providedIn:`root`})};export{t};
