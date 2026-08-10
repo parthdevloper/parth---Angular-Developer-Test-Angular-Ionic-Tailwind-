@@ -2,19 +2,20 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
+import { AUTH_STORAGE_KEY } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
-  
-  const stored = sessionStorage.getItem('auth_user');
+
+  const stored = sessionStorage.getItem(AUTH_STORAGE_KEY);
   let token: string | null = null;
-  
+
   if (stored) {
     try {
       const user = JSON.parse(stored);
       token = user?.accessToken;
     } catch {
-      console.log('failed to parse');
+      sessionStorage.removeItem(AUTH_STORAGE_KEY);
     }
   }
 
@@ -29,10 +30,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
-        sessionStorage.removeItem('auth_user');
+        sessionStorage.removeItem(AUTH_STORAGE_KEY);
         router.navigate(['/login']);
+        // console.log('Unauthorized access - redirecting to login');
       }
-      // console.error('HTTP Error:', error);
       return throwError(() => error);
     })
   );

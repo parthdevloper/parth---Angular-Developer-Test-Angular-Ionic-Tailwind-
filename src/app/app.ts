@@ -11,10 +11,6 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
     </ion-app>
   `,
   changeDetection: ChangeDetectionStrategy.Eager,
-  styles: [`
-    :host {
-      display: block;
-    }
-  `]
+  host: { class: 'block' }
 })
 export class App {}

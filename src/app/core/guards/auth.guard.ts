@@ -7,19 +7,19 @@ export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (authService.isAuthenticated()) {
-    // console.log('authGuard: user is authenticated');
+    // console.log('User is authenticated, allowing access to route');
     return true;
   }
-  
+
   return router.createUrlTree(['/login']);
 };
-
 
 export const guestGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  
+
   if (!authService.isAuthenticated()) return true;
-  
+  // console.log('User is authenticated, redirecting to home');
+
   return router.createUrlTree(['/home']);
 };

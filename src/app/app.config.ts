@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withXhr(), withInterceptors([authInterceptor])),
     provideAnimations(),
-    provideIonicAngular({ 
+    provideIonicAngular({
       mode: 'ios',
       animated: true
     })
