@@ -1,23 +1,21 @@
 import { Directive, input, effect, ElementRef, inject } from '@angular/core';
 
+const DURATION = 600;
+const PREFIX = '$';
+
 @Directive({
   selector: '[appCountUp]',
   standalone: true
 })
 export class CountUpDirective {
   readonly appCountUp = input.required<number>();
-  readonly duration = input(600);
-  readonly prefix = input('$');
 
   private el = inject(ElementRef);
   private animFrame: number | null = null;
   private currentValue = 0;
 
   constructor() {
-    effect(() => {
-      const target = this.appCountUp();
-      this.animateTo(target);
-    });
+    effect(() => this.animateTo(this.appCountUp()));
   }
 
   private animateTo(target: number) {
@@ -27,26 +25,27 @@ export class CountUpDirective {
 
     const start = this.currentValue;
     const diff = target - start;
-    const dur = this.duration();
     const startTime = performance.now();
 
     const animate = (time: number) => {
-      const elapsed = time - startTime;
-      const progress = Math.min(elapsed / dur, 1);
-      
+      const progress = Math.min((time - startTime) / DURATION, 1);
       const eased = 1 - Math.pow(1 - progress, 4);
-      
+
       this.currentValue = Math.round(start + diff * eased);
-      this.el.nativeElement.textContent = `${this.prefix()}${this.currentValue.toLocaleString()}`;
+      this.paint(this.currentValue);
 
       if (progress < 1) {
         this.animFrame = requestAnimationFrame(animate);
       } else {
         this.currentValue = target;
-        this.el.nativeElement.textContent = `${this.prefix()}${target.toLocaleString()}`;
+        this.paint(target);
       }
     };
 
     this.animFrame = requestAnimationFrame(animate);
+  }
+
+  private paint(value: number) {
+    this.el.nativeElement.textContent = `${PREFIX}${value.toLocaleString()}`;
   }
 }

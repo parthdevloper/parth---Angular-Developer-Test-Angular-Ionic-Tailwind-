@@ -1,18 +1,21 @@
-<div class="flex gap-1.5 h-[180px]">
-  <div class="w-8 h-full relative touch-none select-none" #container>
-    <div class="absolute left-1/2 -translate-x-1/2 w-1.5 h-full bg-gray-200 rounded-sm overflow-hidden">
-      <div class="absolute bottom-0 w-full bg-[#4361ee] rounded-sm" [style.height.%]="fillPercent()"></div>
-    </div>
-    <div 
-      class="absolute left-1/2 -translate-x-1/2 translate-y-1/2 w-[22px] h-[22px] bg-white rounded-full shadow-[0_2px_8px_rgba(67,97,238,0.3)] cursor-grab border border-gray-100" 
-      [class.cursor-grabbing]="isDragging()"
-      [style.bottom.%]="thumbPosition()"
-      (pointerdown)="onPointerDown($event)"
-    ></div>
-  </div>
-  <div class="flex flex-col-reverse justify-between py-1">
-    @for (label of labels(); track label) {
-      <span class="text-[11px] min-w-8 text-left text-gray-400">{{ label }}</span>
-    }
-  </div>
+<div
+  class="relative box-border w-full h-full cursor-grab touch-none select-none rounded-[calc(var(--u)*26)] border-solid border-white border-[length:calc(var(--u)*2)] bg-[rgba(255,255,255,0.92)] shadow-[0_calc(var(--u)*8)_calc(var(--u)*22)_rgba(120,180,230,0.2)] focus-visible:[outline:calc(var(--u)*3)_solid_rgba(26,140,240,0.45)] focus-visible:[outline-offset:calc(var(--u)*3)]"
+  role="slider"
+  tabindex="0"
+  [attr.aria-valuemin]="min()"
+  [attr.aria-valuemax]="max()"
+  [attr.aria-valuenow]="value()"
+  [attr.aria-label]="label()"
+  [style.--frac]="fraction()"
+  (pointerdown)="onPointerDown($event)"
+  (keydown)="onKeydown($event)"
+>
+  <div #rail class="absolute left-17 top-22 w-13 h-257 rounded-[calc(var(--u)*6)] bg-[#eaf4fb]"></div>
+  <div
+    class="absolute left-17 bottom-27 w-13 h-[calc(var(--frac,0)*calc(var(--u)*257))] rounded-[calc(var(--u)*6)] bg-[linear-gradient(180deg,#3fb2f7_0%,#1a8cf0_100%)] [transition:height_0.12s_ease-out]"
+  ></div>
+  <div
+    class="absolute left-5 bottom-[calc(var(--u)*8_+_var(--frac,0)*calc(var(--u)*257))] w-38 h-38 rounded-[calc(var(--u)*19)] bg-[linear-gradient(180deg,#4bb8f8_0%,#1a8cf0_100%)] shadow-[0_calc(var(--u)*4)_calc(var(--u)*10)_rgba(26,140,240,0.45)] [transition:bottom_0.12s_ease-out,transform_0.12s_ease-out]"
+    [class]="isDragging() ? 'cursor-grabbing [transform:scale(1.08)]' : ''"
+  ></div>
 </div>

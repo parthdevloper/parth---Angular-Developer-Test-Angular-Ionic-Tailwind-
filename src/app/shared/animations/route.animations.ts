@@ -1,31 +1,30 @@
-import { trigger, transition, style, animate } from '@angular/animations';
+import { trigger, transition, style, animate, AnimationMetadata } from '@angular/animations';
+
+const SLIDE_MS = '280ms ease-out';
+const FADE_MS = '250ms ease-out';
+
+function slideFrom(offset: string): AnimationMetadata[] {
+  return [
+    style({ opacity: 0, transform: `translateX(${offset})` }),
+    animate(SLIDE_MS, style({ opacity: 1, transform: 'translateX(0)' }))
+  ];
+}
 
 export const tabEntry = trigger('tabEntry', [
-  transition('void => forward', [
-    style({ opacity: 0, transform: 'translateX(30%)' }),
-    animate('280ms ease-out', style({ opacity: 1, transform: 'translateX(0)' }))
-  ]),
-  transition('void => back', [
-    style({ opacity: 0, transform: 'translateX(-30%)' }),
-    animate('280ms ease-out', style({ opacity: 1, transform: 'translateX(0)' }))
-  ]),
+  transition('void => forward', slideFrom('30%')),
+  transition('void => back', slideFrom('-30%')),
   transition('void => *', [
     style({ opacity: 0 }),
     animate('200ms ease-out', style({ opacity: 1 }))
-  ]),
-  //   transition('void => *', [
-  //   style({ opacity: 4 }),
-  //   animate('200ms ease-out', style({ opacity: 1 }))
-  // ])
+  ])
 ]);
 
+const riseUp: AnimationMetadata[] = [
+  style({ opacity: 0, transform: 'translateY(10px)' }),
+  animate(FADE_MS, style({ opacity: 1, transform: 'translateY(0)' }))
+];
+
 export const fadeIn = trigger('fadeIn', [
-  transition(':enter', [
-    style({ opacity: 0, transform: 'translateY(10px)' }),
-    animate('250ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-  ]),
-  transition('false => true, void => true', [
-    style({ opacity: 0, transform: 'translateY(10px)' }),
-    animate('250ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-  ])
+  transition(':enter', riseUp),
+  transition('false => true, void => true', riseUp)
 ]);
