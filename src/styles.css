@@ -8,6 +8,7 @@
   --tab-bar-height: calc(var(--unit) * 122 + var(--safe-bottom));
   --page-bg: linear-gradient(160deg, #f4fbff 0%, #eaf6fe 45%, #e4f2fd 100%);
   --brand-stops: #2aa6f6 0%, #1490f3 55%, #0b83f2 100%;
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme static {

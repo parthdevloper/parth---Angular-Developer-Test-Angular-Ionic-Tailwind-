@@ -35,7 +35,7 @@ ion-content {
 
 .arc {
   transition:
-    stroke-dasharray 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    stroke-dasharray 0.7s var(--ease-out-quint),
     stroke 0.3s ease;
 }
 
@@ -62,6 +62,6 @@ ion-content {
   left: calc(var(--unit) * var(--pill-left));
   width: calc(var(--unit) * var(--pill-width));
   transition:
-    left 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-    width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    left 0.25s var(--ease-out-quint),
+    width 0.25s var(--ease-out-quint);
 }
