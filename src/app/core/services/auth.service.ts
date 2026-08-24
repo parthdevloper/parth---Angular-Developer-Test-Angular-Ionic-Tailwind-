@@ -60,7 +60,7 @@ export class AuthService {
 
       if (resp) {
         this.store(resp);
-        return true;
+      return true;
       }
       return false;
     } catch (e) {
