@@ -1,0 +1,260 @@
+@import 'tailwindcss/theme';
+@import 'tailwindcss/utilities' source(none);
+@source "./";
+
+:root {
+  --unit: calc(min(100vw, 430px) / 500);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --tab-bar-height: calc(var(--unit) * 122 + var(--safe-bottom));
+  --page-bg: linear-gradient(160deg, #f4fbff 0%, #eaf6fe 45%, #e4f2fd 100%);
+  --brand-stops: #2aa6f6 0%, #1490f3 55%, #0b83f2 100%;
+}
+
+@theme static {
+  --spacing: var(--unit);
+  --breakpoint-desk: 900px;
+  --leading-normal: normal;
+  --tracking-cta: 0.5px;
+
+  --color-ink: #12181f;
+  --color-ink-soft: #20303f;
+  --color-muted: #3a4450;
+  --color-muted-blue: #7fb6dd;
+  --color-brand: #1a8cf0;
+  --color-danger: #d6455d;
+  --color-sky: #c3e6fa;
+  --color-rail: #eaf4fb;
+  --color-tab-on: #0a84f0;
+  --color-tab-off: #8fc6ef;
+  --color-tab-off-soft: #a9d8f5;
+
+  --color-card: rgba(255, 255, 255, 0.88);
+  --color-card-dim: rgba(255, 255, 255, 0.82);
+  --color-slider: rgba(255, 255, 255, 0.92);
+  --color-bar: rgba(255, 255, 255, 0.86);
+  --color-alert: rgba(255, 255, 255, 0.72);
+  --color-veil: rgba(255, 255, 255, 0.28);
+  --color-divide: rgba(150, 195, 235, 0.45);
+  --color-divide-brand: rgba(255, 255, 255, 0.35);
+  --color-divide-chart: rgba(255, 255, 255, 0.5);
+
+  --shadow-page: inset 0 2px 40px 1px rgba(120, 180, 230, 0.18);
+  --shadow-card: 0 calc(var(--unit) * 8) calc(var(--unit) * 22) rgba(120, 180, 230, 0.18);
+  --shadow-card-lift: 0 calc(var(--unit) * 8) calc(var(--unit) * 22) rgba(90, 160, 230, 0.28);
+  --shadow-focus:
+    0 calc(var(--unit) * 8) calc(var(--unit) * 22) rgba(90, 160, 230, 0.28),
+    inset 0 0 0 2px var(--color-brand);
+  --shadow-slider: 0 calc(var(--unit) * 8) calc(var(--unit) * 22) rgba(120, 180, 230, 0.2);
+  --shadow-avatar: 0 calc(var(--unit) * 6) calc(var(--unit) * 18) rgba(120, 180, 230, 0.22);
+  --shadow-alert: 0 calc(var(--unit) * 6) calc(var(--unit) * 16) rgba(214, 69, 93, 0.16);
+  --shadow-pill: 0 calc(var(--unit) * 4) calc(var(--unit) * 12) rgba(90, 160, 230, 0.25);
+  --shadow-thumb: 0 calc(var(--unit) * 4) calc(var(--unit) * 10) rgba(26, 140, 240, 0.45);
+  --shadow-bar: 0 calc(var(--unit) * -6) calc(var(--unit) * 24) rgba(90, 160, 230, 0.18);
+  --shadow-bar-desk: calc(var(--unit) * 6) 0 calc(var(--unit) * 24) rgba(90, 160, 230, 0.18);
+}
+
+@utility text-* {
+  font-size: calc(var(--unit) * --value(number));
+}
+
+@utility rounded-* {
+  border-radius: calc(var(--unit) * --value(number));
+}
+
+@utility rounded-t-* {
+  border-top-left-radius: calc(var(--unit) * --value(number));
+  border-top-right-radius: calc(var(--unit) * --value(number));
+}
+
+@utility press {
+  transition: transform 0.18s ease;
+}
+
+@utility press-shadow {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+@utility pressed-* {
+  transform: scale(calc(--value(number) / 100));
+}
+
+@utility y-half {
+  transform: translateY(-50%);
+}
+
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@utility grad-btn {
+  background-image: linear-gradient(100deg, var(--brand-stops));
+}
+
+@utility grad-panel {
+  background-image: linear-gradient(150deg, var(--brand-stops));
+}
+
+@utility glow-hdr {
+  filter: drop-shadow(0 calc(var(--unit) * 6) calc(var(--unit) * 9) rgba(120, 180, 230, 0.22));
+}
+
+@utility glow-btn {
+  filter: drop-shadow(0 calc(var(--unit) * 10) calc(var(--unit) * 13) rgba(26, 140, 240, 0.38));
+}
+button {
+  color: inherit;
+  background-color: transparent;
+  line-height: normal;
+  appearance: none;
+}
+
+@utility page-shell {
+  box-sizing: border-box;
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px);
+  box-shadow: var(--shadow-page);
+
+  @media (min-width: 900px) {
+    padding: calc(var(--unit) * 56) calc(var(--unit) * 64) calc(var(--unit) * 56) calc(var(--unit) * 206);
+  }
+}
+
+@utility page-col {
+  margin-inline: auto;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: calc(var(--unit) * 500);
+  max-width: 100%;
+
+  @media (min-width: 900px) {
+    width: 100%;
+    max-width: calc(var(--unit) * 1400);
+  }
+}
+
+@utility page-hdr {
+  display: flex;
+  flex: none;
+  align-items: center;
+  padding-top: calc(var(--unit) * 40);
+  padding-inline: calc(var(--unit) * 53);
+
+  @media (min-width: 900px) {
+    padding: 0;
+  }
+}
+
+@utility icon-btn {
+  display: flex;
+  height: calc(var(--unit) * 84);
+  width: calc(var(--unit) * 84);
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(infinity * 1px);
+  background-color: #fff;
+  filter: drop-shadow(0 calc(var(--unit) * 6) calc(var(--unit) * 9) rgba(120, 180, 230, 0.22));
+  transition: transform 0.18s ease;
+
+  &:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+}
+
+@utility btn-cta {
+  display: flex;
+  height: calc(var(--unit) * 89);
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(var(--unit) * 45);
+  background-image: linear-gradient(100deg, var(--brand-stops));
+  color: #fff;
+  font-size: calc(var(--unit) * 29);
+  font-weight: 800;
+  letter-spacing: var(--tracking-cta);
+  filter: drop-shadow(0 calc(var(--unit) * 10) calc(var(--unit) * 13) rgba(26, 140, 240, 0.38));
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease;
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+}
+
+@utility card-btn {
+  display: flex;
+  background-color: var(--color-card);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+}
+
+@utility card {
+  background-color: var(--color-card);
+  box-shadow: var(--shadow-card);
+}
+@utility spacer {
+  flex: 1 1 auto;
+  min-height: calc(var(--unit) * var(--spacer-min, 14));
+  max-height: calc(var(--unit) * var(--spacer-max, 0));
+
+  @media (min-width: 900px) {
+    display: none;
+  }
+}
+
+@utility input-bare {
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  outline: none;
+}
+
+html,
+body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--page-bg);
+}
+
+ion-content {
+  --background: var(--page-bg);
+}
+
+.mobile-frame {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  height: 100dvh;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--page-bg);
+}
+
+@media (min-width: 900px) {
+  :root {
+    --unit: min(calc(100vw / 1680), calc(100dvh / 800));
+  }
+
+  .mobile-frame {
+    max-width: none;
+  }
+}
