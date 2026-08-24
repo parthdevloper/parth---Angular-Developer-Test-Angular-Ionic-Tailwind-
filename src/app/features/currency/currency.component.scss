@@ -1,0 +1,22 @@
+.page-body {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding-inline: calc(var(--unit) * 30);
+  padding-bottom: var(--tab-bar-height);
+}
+
+@media (min-width: 900px) {
+  .page-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    align-content: center;
+    align-items: center;
+    column-gap: calc(var(--unit) * 80);
+    row-gap: calc(var(--unit) * 44);
+    padding-inline: 0;
+    padding-bottom: 0;
+  }
+}

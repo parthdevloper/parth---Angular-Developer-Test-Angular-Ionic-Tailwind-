@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonContent } from '@ionic/angular/standalone';
 import { DataService } from '../../core/services/data.service';
 import { VerticalSliderComponent } from '../../shared/components/vertical-slider/vertical-slider.component';
@@ -7,12 +7,10 @@ import { fadeIn, tabEntry } from '../../shared/animations/route.animations';
 
 @Component({
   selector: 'app-currency',
-  standalone: true,
   imports: [IonContent, VerticalSliderComponent],
   animations: [fadeIn, tabEntry],
   templateUrl: './currency.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './currency.component.scss'
+  styleUrl: './currency.component.scss',
 })
 export class CurrencyComponent extends TabPage {
   protected dataService = inject(DataService);
@@ -25,8 +23,13 @@ export class CurrencyComponent extends TabPage {
   readonly userName = 'Lorem Name';
   readonly userHandle = 'Lorem Name';
 
-  showRates(value: number) {
-    this.dataService.selectCard(value);
+  readonly sliders = [
+    { label: 'Lorem', value: this.dataService.leftSliderValue },
+    { label: 'Ipsum', value: this.dataService.rightSliderValue },
+  ];
+
+  showRates(card: 'left' | 'right') {
+    this.dataService.selectedCard.set(card);
     this.navigate('/home', 'forward');
   }
 
