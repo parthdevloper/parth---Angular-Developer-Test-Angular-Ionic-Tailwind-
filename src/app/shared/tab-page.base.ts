@@ -9,7 +9,7 @@ export abstract class TabPage {
 
   readonly loaded = signal(false);
 
-  @HostBinding('@tabEntry') get slideIn() {
+  @HostBinding('@tabEntry') get entryDirection() {
     return this.navDirection.direction();
   }
 

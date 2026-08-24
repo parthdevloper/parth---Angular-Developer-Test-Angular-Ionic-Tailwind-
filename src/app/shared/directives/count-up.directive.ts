@@ -1,51 +1,57 @@
-import { Directive, input, effect, ElementRef, inject } from '@angular/core';
+import { Directive, input, effect, ElementRef, DestroyRef, inject } from '@angular/core';
 
 const DURATION = 600;
-const PREFIX = '$';
 
 @Directive({
   selector: '[appCountUp]',
-  standalone: true
 })
 export class CountUpDirective {
   readonly appCountUp = input.required<number>();
 
+  readonly countUpPrefix = input('');
+
   private el = inject(ElementRef);
-  private animFrame: number | null = null;
-  private currentValue = 0;
+  private frame: number | null = null;
+  private current = 0;
 
   constructor() {
     effect(() => this.animateTo(this.appCountUp()));
+    inject(DestroyRef).onDestroy(() => this.stop());
+  }
+
+  private stop() {
+    if (this.frame !== null) {
+      cancelAnimationFrame(this.frame);
+      this.frame = null;
+    }
+  }
+
+  private render(value: number) {
+    this.current = value;
+    this.el.nativeElement.textContent = `${this.countUpPrefix()}${value.toLocaleString()}`;
   }
 
   private animateTo(target: number) {
-    if (this.animFrame) {
-      cancelAnimationFrame(this.animFrame);
+    this.stop();
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      this.render(target);
+      return;
     }
 
-    const start = this.currentValue;
-    const diff = target - start;
-    const startTime = performance.now();
+    const from = this.current;
+    const distance = target - from;
+    const startedAt = performance.now();
 
-    const animate = (time: number) => {
-      const progress = Math.min((time - startTime) / DURATION, 1);
+    const step = (now: number) => {
+      const progress = Math.min((now - startedAt) / DURATION, 1);
       const eased = 1 - Math.pow(1 - progress, 4);
 
-      this.currentValue = Math.round(start + diff * eased);
-      this.paint(this.currentValue);
+      this.render(Math.round(from + distance * eased));
 
-      if (progress < 1) {
-        this.animFrame = requestAnimationFrame(animate);
-      } else {
-        this.currentValue = target;
-        this.paint(target);
-      }
+      this.frame = progress < 1 ? requestAnimationFrame(step) : null;
     };
 
-    this.animFrame = requestAnimationFrame(animate);
-  }
-
-  private paint(value: number) {
-    this.el.nativeElement.textContent = `${PREFIX}${value.toLocaleString()}`;
+    this.frame = requestAnimationFrame(step);
   }
 }
