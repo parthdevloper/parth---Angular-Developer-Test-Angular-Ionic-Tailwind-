@@ -1,21 +1,23 @@
 <div
-  class="relative box-border w-full h-full cursor-grab touch-none select-none rounded-[calc(var(--u)*26)] border-solid border-white border-[length:calc(var(--u)*2)] bg-[rgba(255,255,255,0.92)] shadow-[0_calc(var(--u)*8)_calc(var(--u)*22)_rgba(120,180,230,0.2)] focus-visible:[outline:calc(var(--u)*3)_solid_rgba(26,140,240,0.45)] focus-visible:[outline-offset:calc(var(--u)*3)]"
+  class="slider relative box-border w-full h-full cursor-grab touch-none select-none rounded-26 border-solid border-white bg-slider shadow-slider"
   role="slider"
   tabindex="0"
+  aria-orientation="vertical"
   [attr.aria-valuemin]="min()"
   [attr.aria-valuemax]="max()"
   [attr.aria-valuenow]="value()"
   [attr.aria-label]="label()"
-  [style.--frac]="fraction()"
+  [style.--fill-fraction]="fraction()"
   (pointerdown)="onPointerDown($event)"
+  (pointermove)="onPointerMove($event)"
+  (pointerup)="isDragging.set(false)"
+  (pointercancel)="isDragging.set(false)"
   (keydown)="onKeydown($event)"
 >
-  <div #rail class="absolute left-17 top-22 w-13 h-257 rounded-[calc(var(--u)*6)] bg-[#eaf4fb]"></div>
+  <div #rail class="absolute left-17 top-22 w-13 h-257 rounded-6 bg-rail"></div>
+  <div class="fill absolute left-17 bottom-27 w-13 rounded-6"></div>
   <div
-    class="absolute left-17 bottom-27 w-13 h-[calc(var(--frac,0)*calc(var(--u)*257))] rounded-[calc(var(--u)*6)] bg-[linear-gradient(180deg,#3fb2f7_0%,#1a8cf0_100%)] [transition:height_0.12s_ease-out]"
-  ></div>
-  <div
-    class="absolute left-5 bottom-[calc(var(--u)*8_+_var(--frac,0)*calc(var(--u)*257))] w-38 h-38 rounded-[calc(var(--u)*19)] bg-[linear-gradient(180deg,#4bb8f8_0%,#1a8cf0_100%)] shadow-[0_calc(var(--u)*4)_calc(var(--u)*10)_rgba(26,140,240,0.45)] [transition:bottom_0.12s_ease-out,transform_0.12s_ease-out]"
-    [class]="isDragging() ? 'cursor-grabbing [transform:scale(1.08)]' : ''"
+    class="thumb absolute left-5 w-38 h-38 rounded-19 shadow-thumb"
+    [class]="isDragging() ? 'cursor-grabbing dragging' : ''"
   ></div>
 </div>

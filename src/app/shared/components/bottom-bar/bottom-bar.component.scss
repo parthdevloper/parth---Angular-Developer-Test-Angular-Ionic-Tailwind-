@@ -1,0 +1,43 @@
+.bar-blur {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.tab-btn {
+  position: relative;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0 calc(var(--unit) * -14);
+}
+
+.tab-btn svg {
+  transition:
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.tab-btn:active svg {
+  transform: scale(0.9);
+}
+
+.tab-btn:disabled svg {
+  opacity: 0.55;
+}
+
+@media (min-width: 900px) {
+  .tab-btn {
+    width: 100%;
+    height: auto;
+  }
+
+  .tab-btn::after {
+    inset: calc(var(--unit) * -16) 0;
+  }
+}

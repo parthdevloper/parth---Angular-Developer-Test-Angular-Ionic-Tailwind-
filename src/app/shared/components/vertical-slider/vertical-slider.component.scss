@@ -1,0 +1,26 @@
+.slider {
+  border-width: calc(var(--unit) * 2);
+}
+
+.slider:focus-visible {
+  outline: calc(var(--unit) * 3) solid rgba(26, 140, 240, 0.45);
+  outline-offset: calc(var(--unit) * 3);
+}
+
+.fill {
+  height: calc(var(--fill-fraction, 0) * var(--unit) * 257);
+  background-image: linear-gradient(180deg, #3fb2f7 0%, #1a8cf0 100%);
+  transition: height 0.12s ease-out;
+}
+
+.thumb {
+  bottom: calc(var(--unit) * 8 + var(--fill-fraction, 0) * var(--unit) * 257);
+  background-image: linear-gradient(180deg, #4bb8f8 0%, #1a8cf0 100%);
+  transition:
+    bottom 0.12s ease-out,
+    transform 0.12s ease-out;
+}
+
+.thumb.dragging {
+  transform: scale(1.08);
+}
