@@ -8,21 +8,24 @@ export const tabsRoutes: Routes = [
     children: [
       {
         path: 'home',
-        loadComponent: () => import('../../features/home/home.component').then(m => m.HomeComponent)
+        loadComponent: () =>
+          import('../../features/home/home.component').then((m) => m.HomeComponent),
       },
       {
         path: 'currency',
-        loadComponent: () => import('../../features/currency/currency.component').then(m => m.CurrencyComponent)
+        loadComponent: () =>
+          import('../../features/currency/currency.component').then((m) => m.CurrencyComponent),
       },
       {
         path: 'analytics',
-        loadComponent: () => import('../../features/analytics/analytics.component').then(m => m.AnalyticsComponent)
+        loadComponent: () =>
+          import('../../features/analytics/analytics.component').then((m) => m.AnalyticsComponent),
       },
       {
         path: '',
         redirectTo: 'home',
-        pathMatch: 'full'
-      }
-    ]
-  }
+        pathMatch: 'full',
+      },
+    ],
+  },
 ];

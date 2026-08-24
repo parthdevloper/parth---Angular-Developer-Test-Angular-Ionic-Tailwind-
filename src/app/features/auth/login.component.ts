@@ -1,4 +1,4 @@
-import { Component, inject, signal, afterNextRender, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, afterNextRender } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonSpinner } from '@ionic/angular/standalone';
@@ -7,15 +7,13 @@ import { fadeIn } from '../../shared/animations/route.animations';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [FormsModule, IonContent, IonSpinner],
   animations: [fadeIn],
   templateUrl: './login.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  protected authService = inject(AuthService);
+  protected auth = inject(AuthService);
   private router = inject(Router);
 
   username = '';
@@ -24,18 +22,13 @@ export class LoginComponent {
   loaded = signal(false);
 
   constructor() {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/home']);
-    }
-
     afterNextRender(() => this.loaded.set(true));
   }
 
-  async handleLogin() {
+  async submit() {
     if (!this.username || !this.password) return;
 
-    const success = await this.authService.login(this.username, this.password);
-    if (success) {
+    if (await this.auth.login(this.username, this.password)) {
       this.router.navigate(['/home']);
     }
   }
